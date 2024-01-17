@@ -1,0 +1,63 @@
+{% extends 'base.html' %} {% block content %}
+<div class="d-flex flex-wrap mt-5">
+    <div class="col-lg-2 col-md-12 bg-body-secondary vh-100 p-4">
+        <h4 class="mb-5">Categories</h4>
+        <a class="text-decoration-none" href="{% url 'home' %}">All</a>
+        <br />
+        {% for category in categories %}
+        <a class="text-decoration-none" href="{% url 'category_filter' category.slug %}"
+            >{{category.name}}</a
+        >
+        <br />
+        {% endfor%}
+    </div>
+    <div class="col-lg-10 col-md-12 p-4 bg-body-tertiary">
+        {% if posts|length == 0 %}
+        <h4>No Posts Available!</h4>
+        {% else %}
+        <h4>
+            {% if posts|length > 1 %} Total {{posts | length}} posts {% else %}
+            Only {{posts | length}} post {% endif %}
+        </h4>
+        {% endif %}
+        <div class="d-flex flex-wrap justify-content-center">
+            {% for post in posts %}
+            <div class="col-sm-3 m-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title bg-body-tertiary">
+                            {{post.title}}
+                        </h5>
+                        <p class="card-text">{{post.content}}</p>
+                        <p class="card-text fw-bold text-warning">
+                            Author: {{post.author.username}}
+                        </p>
+                        <p class="card-text">
+                            Category: {% for cat in post.category.all %}
+                            <button class="btn btn-primary disabled m-1">
+                                {{cat.name}}
+                            </button>
+                            {% endfor %}
+                        </p>
+                        <!-- user can only edit or delete his own post  -->
+                        {% if user.is_authenticated and user == post.author %}
+
+                        <a
+                            href="{% url 'edit_post' post.id %}"
+                            class="btn btn-warning"
+                            >Edit</a
+                        >
+                        <a
+                            href="{% url 'delete_post' post.id %}"
+                            class="btn btn-danger"
+                            >Delete</a
+                        >
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
