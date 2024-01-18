@@ -15,3 +15,5 @@ urlpatterns = [
 
 # media files will be working in both debug=True and debug=False. that means both in development and production.
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# settings.MEDIA_URL is Base url to serve media files.
+# document_root = settings.MEDIA_ROOT is used to tell django where to look for the media files (this line is for global media files otherwise if its inside the app then no needed cause already whole app is defined in installed app).
