@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
+{% load crispy_forms_tags %}
 <!-- access directly using app name 'posts' with its singular form 'post' -->
 <div class="col-12 mt-4">
     <div class="card">
@@ -17,12 +18,27 @@
                 </button>
                 {% endfor %}
             </p>
-            <a href="{% url 'edit_post' post.id %}" class="btn btn-primary"
-                >Edit</a
-            >
-            <a href="{% url 'delete_post' post.id %}" class="btn btn-danger"
-                >Delete</a
-            >
+            <a href="{% url 'edit_post' post.id %}" class="btn btn-primary">Edit</a>
+            <a href="{% url 'delete_post' post.id %}" class="btn btn-danger">Delete</a>
+        </div>
+    </div>
+    <div class="card m-2">
+        <h5 class="p-3">Total Comments : {{comments | length}}</h5>
+        {% for comment in comments %}
+        <div class="card-body border m-2">
+            <p><b>{{comment.name}}</b> {{comment.created_on}}</p>
+            <p>{{comment.body}}</p>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="card m-2">
+        <div class="card-body">
+            <form method="post">
+                <h4>Add Comment</h4>
+                {% csrf_token %}
+                {{comment_form | crispy}}
+
+                <button class="btn btn-warning">Submit</button>
         </div>
     </div>
 </div>

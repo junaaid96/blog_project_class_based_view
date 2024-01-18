@@ -93,3 +93,32 @@ class DetailsPostView(DetailView):
     model = models.Post
     template_name = 'details_post.html'
     # pk_url_kwarg = 'post_id'
+
+    def post(self, request, *args, **kwargs):
+        # create a form instance and populate it with data from the request.
+        comment_form = forms.CommentForm(data=self.request.POST)
+        post = self.get_object()
+        if comment_form.is_valid():
+            # commit=False means the form is not saved to the database yet. we are saving it to the database later.
+            new_comment = comment_form.save(commit=False)
+            # adding the post to the comment
+            new_comment.post = post
+            # adding the user to the comment
+            new_comment.save()
+            # *args and **kwargs are used to pass the arguments and keyword arguments to the get method. so that we can use the get method to get the context data.
+        return self.get(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        # get_context_data is used to add extra context to the template.
+        context = super().get_context_data(**kwargs)
+        post = self.object  # self.object is the post object
+        # getting all the comments of the post
+        comments = post.comments.all()
+        # creating a comment form
+        comment_form = forms.CommentForm()
+        # adding the comments and comment_form to the context
+        context['comments'] = comments
+        # adding the comment_form to the context
+        context['comment_form'] = comment_form
+        return context
+    

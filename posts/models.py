@@ -16,7 +16,18 @@ class Post(models.Model):
     # if we want to keep the posts of an author even if we delete the author, we can use on_delete=models.SET_NULL
     # author = models.ForeignKey(Author, on_delete=models.SET_NULL, null=True)
     image = models.ImageField(upload_to='posts/', blank=True, null=True)
-    
 
     def __str__(self):
         return self.title
+
+
+class Comment(models.Model):
+    post = models.ForeignKey(
+        Post, on_delete=models.CASCADE, related_name='comments')
+    name = models.CharField(max_length=30)
+    email = models.EmailField()
+    body = models.TextField()
+    created_on = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Comment by {self.name}"
