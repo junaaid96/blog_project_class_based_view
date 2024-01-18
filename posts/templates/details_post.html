@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+<!-- access directly using app name 'posts' with its singular form 'post' -->
+<div class="col-12 mt-4">
+    <div class="card">
+        <div class="card-body">
+            <img src="{{post.image.url}}" class="card-img-top w-50" alt="..." />
+            <h1 class="card-title bg-body-tertiary">{{post.title}}</h1>
+            <p class="card-text">{{post.content}}</p>
+            <p class="card-text fw-bold text-warning">
+                Author: {{post.author.username}}
+            </p>
+            <p class="card-text">
+                Category: {% for cat in post.category.all %}
+                <button class="btn btn-warning disabled m-1">
+                    {{cat.name}}
+                </button>
+                {% endfor %}
+            </p>
+            <a href="{% url 'edit_post' post.id %}" class="btn btn-primary"
+                >Edit</a
+            >
+            <a href="{% url 'delete_post' post.id %}" class="btn btn-danger"
+                >Delete</a
+            >
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -3,7 +3,7 @@ from django.urls import reverse_lazy
 from . import forms, models
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
-from django.views.generic import CreateView, UpdateView, DeleteView
+from django.views.generic import CreateView, UpdateView, DeleteView, DetailView
 
 # @login_required
 # def add_post(request):
@@ -86,3 +86,10 @@ class DeletePostDeleteView(DeleteView):
     template_name = 'delete_post.html'
     pk_url_kwarg = 'post_id'
     success_url = reverse_lazy('profile')
+
+
+@method_decorator(login_required, name='dispatch')
+class DetailsPostView(DetailView):
+    model = models.Post
+    template_name = 'details_post.html'
+    # pk_url_kwarg = 'post_id'

@@ -15,7 +15,7 @@ class Post(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     # if we want to keep the posts of an author even if we delete the author, we can use on_delete=models.SET_NULL
     # author = models.ForeignKey(Author, on_delete=models.SET_NULL, null=True)
-    image = models.ImageField(upload_to='media/', blank=True, null=True)
+    image = models.ImageField(upload_to='posts/', blank=True, null=True)
     
 
     def __str__(self):
