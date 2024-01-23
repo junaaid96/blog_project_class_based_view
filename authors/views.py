@@ -116,4 +116,4 @@ def password_change(request):
 
 @method_decorator(login_required, name='dispatch')
 class UserLogoutView(LogoutView):
-    next_page = reverse_lazy('home')
+    next_page = reverse_lazy('login')
